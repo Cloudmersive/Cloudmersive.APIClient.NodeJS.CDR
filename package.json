@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cloudmersive-cdr-api-client": "file:client",
     "cloudmersive-virus-api-client": "file:client"
   }
 }
