@@ -5,7 +5,7 @@ Use the Content Disarm and Reconstruction API to remove security risks from docu
 [Cloudmersive CDR API](https://www.cloudmersive.com/cdr-api) provides advanced document sanitization capabilities.
 
 - API version: v1
-- Package version: 1.0.0
+- Package version: 1.0.1
 
 
 ## Installation
@@ -113,7 +113,7 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
 api.file(opts, callback);
@@ -126,12 +126,15 @@ All URIs are relative to *https://api.cloudmersive.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*CloudmersiveCdrApiClient.FileSanitizationApi* | [**file**](docs/FileSanitizationApi.md#file) | **POST** /cdr/sanitization/file | Complete Content Disarm and Reconstruction on an Input File, and output in same file format
-*CloudmersiveCdrApiClient.FileSanitizationApi* | [**fileToPdf**](docs/FileSanitizationApi.md#fileToPdf) | **POST** /cdr/sanitization/file/to/pdf | Complete Content Disarm and Reconstruction on an Input File with PDF/A Output
+*CloudmersiveCdrApiClient.FileSanitizationApi* | [**file**](docs/FileSanitizationApi.md#file) | **POST** /cdr/sanitization/file | Content Disarm and Reconstruction on a File
+*CloudmersiveCdrApiClient.FileSanitizationApi* | [**fileAdvanced**](docs/FileSanitizationApi.md#fileAdvanced) | **POST** /cdr/sanitization/file/advanced | Advanced Content Disarm and Reconstruction on a File
+*CloudmersiveCdrApiClient.FileSanitizationApi* | [**fileToPdf**](docs/FileSanitizationApi.md#fileToPdf) | **POST** /cdr/sanitization/file/to/pdf | Content Disarm and Reconstruction on a File with PDFA Output
+*CloudmersiveCdrApiClient.FileSanitizationApi* | [**fileToPdfAdvanced**](docs/FileSanitizationApi.md#fileToPdfAdvanced) | **POST** /cdr/sanitization/file/to/pdf/advanced | Advanced Content Disarm and Reconstruction on a File with PDFA Output
 
 
 ## Documentation for Models
 
+ - [CloudmersiveCdrApiClient.ProblemDetails](docs/ProblemDetails.md)
 
 
 ## Documentation for Authorization

@@ -16,24 +16,24 @@
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(['ApiClient'], factory);
+    define(['ApiClient', 'model/ProblemDetails'], factory);
   } else if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'));
+    module.exports = factory(require('../ApiClient'), require('../model/ProblemDetails'));
   } else {
     // Browser globals (root is window)
     if (!root.CloudmersiveCdrApiClient) {
       root.CloudmersiveCdrApiClient = {};
     }
-    root.CloudmersiveCdrApiClient.FileSanitizationApi = factory(root.CloudmersiveCdrApiClient.ApiClient);
+    root.CloudmersiveCdrApiClient.FileSanitizationApi = factory(root.CloudmersiveCdrApiClient.ApiClient, root.CloudmersiveCdrApiClient.ProblemDetails);
   }
-}(this, function(ApiClient) {
+}(this, function(ApiClient, ProblemDetails) {
   'use strict';
 
   /**
    * FileSanitization service.
    * @module api/FileSanitizationApi
-   * @version 1.0.0
+   * @version 1.0.1
    */
 
   /**
@@ -51,16 +51,17 @@
      * Callback function to receive the result of the file operation.
      * @callback module:api/FileSanitizationApi~fileCallback
      * @param {String} error Error message, if any.
-     * @param data This operation does not return a value.
+     * @param {'Blob'} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Complete Content Disarm and Reconstruction on an Input File, and output in same file format
+     * Content Disarm and Reconstruction on a File
      * Processes the input file via CDR to produce a secured output file.  Input content is parsed, disarmed, and then reconstructed into a new output file with the same file format as the input.
      * @param {Object} opts Optional parameters
      * @param {File} opts.inputFile Input document, or photos of a document, to extract data from
      * @param {module:api/FileSanitizationApi~fileCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link 'Blob'}
      */
     this.file = function(opts, callback) {
       opts = opts || {};
@@ -81,8 +82,8 @@
 
       var authNames = ['Apikey'];
       var contentTypes = ['multipart/form-data'];
-      var accepts = [];
-      var returnType = null;
+      var accepts = ['application/octet-stream'];
+      var returnType = 'Blob';
 
       return this.apiClient.callApi(
         '/cdr/sanitization/file', 'POST',
@@ -92,19 +93,89 @@
     }
 
     /**
-     * Callback function to receive the result of the fileToPdf operation.
-     * @callback module:api/FileSanitizationApi~fileToPdfCallback
+     * Callback function to receive the result of the fileAdvanced operation.
+     * @callback module:api/FileSanitizationApi~fileAdvancedCallback
      * @param {String} error Error message, if any.
-     * @param data This operation does not return a value.
+     * @param {'Blob'} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Complete Content Disarm and Reconstruction on an Input File with PDF/A Output
+     * Advanced Content Disarm and Reconstruction on a File
+     * Processes the input file via CDR to produce a secured output file with advanced scan options and response headers containing scan metadata.
+     * @param {Object} opts Optional parameters
+     * @param {Boolean} opts.allowExecutables Set to false to block executable files (EXE, DLL, etc.)
+     * @param {Boolean} opts.allowInvalidFiles Set to false to block files that are not valid for their detected type
+     * @param {Boolean} opts.allowScripts Set to false to block script files. PDF and Office macro sanitization still runs regardless.
+     * @param {Boolean} opts.allowPasswordProtectedFiles Set to false to block password-protected files
+     * @param {Boolean} opts.allowMacros Set to false to block files containing macros. Office macro removal still runs regardless.
+     * @param {Boolean} opts.allowXmlExternalEntities Set to false to block XML files with external entity references (XXE)
+     * @param {Boolean} opts.allowInsecureDeserialization Set to false to block files with insecure deserialization patterns
+     * @param {Boolean} opts.allowHtml Set to false to block HTML files
+     * @param {Boolean} opts.allowUnsafeArchives Set to false to block archive files flagged as unsafe (e.g., zip bombs)
+     * @param {Boolean} opts.allowOleEmbeddedObject Set to false to block files with embedded OLE objects
+     * @param {Boolean} opts.allowUnwantedAction Set to false to block files with unwanted actions
+     * @param {String} opts.restrictFileTypes Comma-separated list of allowed file extensions (e.g., \".pdf,.docx,.xlsx\"). Files not matching will be blocked.
+     * @param {File} opts.inputFile Input document to CDR process
+     * @param {module:api/FileSanitizationApi~fileAdvancedCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link 'Blob'}
+     */
+    this.fileAdvanced = function(opts, callback) {
+      opts = opts || {};
+      var postBody = null;
+
+
+      var pathParams = {
+      };
+      var queryParams = {
+      };
+      var collectionQueryParams = {
+      };
+      var headerParams = {
+        'allowExecutables': opts['allowExecutables'],
+        'allowInvalidFiles': opts['allowInvalidFiles'],
+        'allowScripts': opts['allowScripts'],
+        'allowPasswordProtectedFiles': opts['allowPasswordProtectedFiles'],
+        'allowMacros': opts['allowMacros'],
+        'allowXmlExternalEntities': opts['allowXmlExternalEntities'],
+        'allowInsecureDeserialization': opts['allowInsecureDeserialization'],
+        'allowHtml': opts['allowHtml'],
+        'allowUnsafeArchives': opts['allowUnsafeArchives'],
+        'allowOleEmbeddedObject': opts['allowOleEmbeddedObject'],
+        'allowUnwantedAction': opts['allowUnwantedAction'],
+        'restrictFileTypes': opts['restrictFileTypes']
+      };
+      var formParams = {
+        'InputFile': opts['inputFile']
+      };
+
+      var authNames = ['Apikey'];
+      var contentTypes = ['multipart/form-data'];
+      var accepts = ['application/octet-stream'];
+      var returnType = 'Blob';
+
+      return this.apiClient.callApi(
+        '/cdr/sanitization/file/advanced', 'POST',
+        pathParams, queryParams, collectionQueryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the fileToPdf operation.
+     * @callback module:api/FileSanitizationApi~fileToPdfCallback
+     * @param {String} error Error message, if any.
+     * @param {'Blob'} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Content Disarm and Reconstruction on a File with PDFA Output
      * Processes the input file via CDR to produce a secured PDF/A output file.  Input content is parsed, disarmed, and then reconstructed into a new PDF/A output file.
      * @param {Object} opts Optional parameters
      * @param {File} opts.inputFile Input document, or photos of a document, to extract data from
      * @param {module:api/FileSanitizationApi~fileToPdfCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link 'Blob'}
      */
     this.fileToPdf = function(opts, callback) {
       opts = opts || {};
@@ -125,11 +196,80 @@
 
       var authNames = ['Apikey'];
       var contentTypes = ['multipart/form-data'];
-      var accepts = [];
-      var returnType = null;
+      var accepts = ['application/octet-stream'];
+      var returnType = 'Blob';
 
       return this.apiClient.callApi(
         '/cdr/sanitization/file/to/pdf', 'POST',
+        pathParams, queryParams, collectionQueryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the fileToPdfAdvanced operation.
+     * @callback module:api/FileSanitizationApi~fileToPdfAdvancedCallback
+     * @param {String} error Error message, if any.
+     * @param {'Blob'} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Advanced Content Disarm and Reconstruction on a File with PDFA Output
+     * Processes the input file via CDR to produce a secured PDF/A output file with advanced scan options and response headers containing scan metadata.
+     * @param {Object} opts Optional parameters
+     * @param {Boolean} opts.allowExecutables Set to false to block executable files (EXE, DLL, etc.)
+     * @param {Boolean} opts.allowInvalidFiles Set to false to block files that are not valid for their detected type
+     * @param {Boolean} opts.allowScripts Set to false to block script files. PDF and Office macro sanitization still runs regardless.
+     * @param {Boolean} opts.allowPasswordProtectedFiles Set to false to block password-protected files
+     * @param {Boolean} opts.allowMacros Set to false to block files containing macros. Office macro removal still runs regardless.
+     * @param {Boolean} opts.allowXmlExternalEntities Set to false to block XML files with external entity references (XXE)
+     * @param {Boolean} opts.allowInsecureDeserialization Set to false to block files with insecure deserialization patterns
+     * @param {Boolean} opts.allowHtml Set to false to block HTML files
+     * @param {Boolean} opts.allowUnsafeArchives Set to false to block archive files flagged as unsafe (e.g., zip bombs)
+     * @param {Boolean} opts.allowOleEmbeddedObject Set to false to block files with embedded OLE objects
+     * @param {Boolean} opts.allowUnwantedAction Set to false to block files with unwanted actions
+     * @param {String} opts.restrictFileTypes Comma-separated list of allowed file extensions (e.g., \".pdf,.docx,.xlsx\"). Files not matching will be blocked.
+     * @param {File} opts.inputFile Input document to CDR process
+     * @param {module:api/FileSanitizationApi~fileToPdfAdvancedCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link 'Blob'}
+     */
+    this.fileToPdfAdvanced = function(opts, callback) {
+      opts = opts || {};
+      var postBody = null;
+
+
+      var pathParams = {
+      };
+      var queryParams = {
+      };
+      var collectionQueryParams = {
+      };
+      var headerParams = {
+        'allowExecutables': opts['allowExecutables'],
+        'allowInvalidFiles': opts['allowInvalidFiles'],
+        'allowScripts': opts['allowScripts'],
+        'allowPasswordProtectedFiles': opts['allowPasswordProtectedFiles'],
+        'allowMacros': opts['allowMacros'],
+        'allowXmlExternalEntities': opts['allowXmlExternalEntities'],
+        'allowInsecureDeserialization': opts['allowInsecureDeserialization'],
+        'allowHtml': opts['allowHtml'],
+        'allowUnsafeArchives': opts['allowUnsafeArchives'],
+        'allowOleEmbeddedObject': opts['allowOleEmbeddedObject'],
+        'allowUnwantedAction': opts['allowUnwantedAction'],
+        'restrictFileTypes': opts['restrictFileTypes']
+      };
+      var formParams = {
+        'InputFile': opts['inputFile']
+      };
+
+      var authNames = ['Apikey'];
+      var contentTypes = ['multipart/form-data'];
+      var accepts = ['application/octet-stream'];
+      var returnType = 'Blob';
+
+      return this.apiClient.callApi(
+        '/cdr/sanitization/file/to/pdf/advanced', 'POST',
         pathParams, queryParams, collectionQueryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );

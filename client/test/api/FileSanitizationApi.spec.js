@@ -37,7 +37,7 @@
     describe('FileSanitizationApi', function() {
       describe('file', function() {
         it('should call file successfully', function(done) {
-          // TODO: uncomment, update parameter values for file call
+          // TODO: uncomment, update parameter values for file call and complete the assertions
           /*
           var opts = {};
           opts.inputFile = "/path/to/file.txt";
@@ -47,6 +47,44 @@
               done(error);
               return;
             }
+            // TODO: update response assertions
+            expect(data).to.be.a(Blob);
+            // expect(data).to.be(null);
+
+            done();
+          });
+          */
+          // TODO: uncomment and complete method invocation above, then delete this line and the next:
+          done();
+        });
+      });
+      describe('fileAdvanced', function() {
+        it('should call fileAdvanced successfully', function(done) {
+          // TODO: uncomment, update parameter values for fileAdvanced call and complete the assertions
+          /*
+          var opts = {};
+          opts.allowExecutables = true;
+          opts.allowInvalidFiles = true;
+          opts.allowScripts = true;
+          opts.allowPasswordProtectedFiles = true;
+          opts.allowMacros = true;
+          opts.allowXmlExternalEntities = true;
+          opts.allowInsecureDeserialization = true;
+          opts.allowHtml = true;
+          opts.allowUnsafeArchives = true;
+          opts.allowOleEmbeddedObject = true;
+          opts.allowUnwantedAction = true;
+          opts.restrictFileTypes = "restrictFileTypes_example";
+          opts.inputFile = "/path/to/file.txt";
+
+          instance.fileAdvanced(opts, function(error, data, response) {
+            if (error) {
+              done(error);
+              return;
+            }
+            // TODO: update response assertions
+            expect(data).to.be.a(Blob);
+            // expect(data).to.be(null);
 
             done();
           });
@@ -57,7 +95,7 @@
       });
       describe('fileToPdf', function() {
         it('should call fileToPdf successfully', function(done) {
-          // TODO: uncomment, update parameter values for fileToPdf call
+          // TODO: uncomment, update parameter values for fileToPdf call and complete the assertions
           /*
           var opts = {};
           opts.inputFile = "/path/to/file.txt";
@@ -67,6 +105,44 @@
               done(error);
               return;
             }
+            // TODO: update response assertions
+            expect(data).to.be.a(Blob);
+            // expect(data).to.be(null);
+
+            done();
+          });
+          */
+          // TODO: uncomment and complete method invocation above, then delete this line and the next:
+          done();
+        });
+      });
+      describe('fileToPdfAdvanced', function() {
+        it('should call fileToPdfAdvanced successfully', function(done) {
+          // TODO: uncomment, update parameter values for fileToPdfAdvanced call and complete the assertions
+          /*
+          var opts = {};
+          opts.allowExecutables = true;
+          opts.allowInvalidFiles = true;
+          opts.allowScripts = true;
+          opts.allowPasswordProtectedFiles = true;
+          opts.allowMacros = true;
+          opts.allowXmlExternalEntities = true;
+          opts.allowInsecureDeserialization = true;
+          opts.allowHtml = true;
+          opts.allowUnsafeArchives = true;
+          opts.allowOleEmbeddedObject = true;
+          opts.allowUnwantedAction = true;
+          opts.restrictFileTypes = "restrictFileTypes_example";
+          opts.inputFile = "/path/to/file.txt";
+
+          instance.fileToPdfAdvanced(opts, function(error, data, response) {
+            if (error) {
+              done(error);
+              return;
+            }
+            // TODO: update response assertions
+            expect(data).to.be.a(Blob);
+            // expect(data).to.be(null);
 
             done();
           });

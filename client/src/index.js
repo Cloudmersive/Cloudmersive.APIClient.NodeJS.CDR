@@ -16,12 +16,12 @@
 (function(factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(['ApiClient', 'api/FileSanitizationApi'], factory);
+    define(['ApiClient', 'model/ProblemDetails', 'api/FileSanitizationApi'], factory);
   } else if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('./ApiClient'), require('./api/FileSanitizationApi'));
+    module.exports = factory(require('./ApiClient'), require('./model/ProblemDetails'), require('./api/FileSanitizationApi'));
   }
-}(function(ApiClient, FileSanitizationApi) {
+}(function(ApiClient, ProblemDetails, FileSanitizationApi) {
   'use strict';
 
   /**
@@ -53,7 +53,7 @@
    * </pre>
    * </p>
    * @module index
-   * @version 1.0.0
+   * @version 1.0.1
    */
   var exports = {
     /**
@@ -61,6 +61,11 @@
      * @property {module:ApiClient}
      */
     ApiClient: ApiClient,
+    /**
+     * The ProblemDetails model constructor.
+     * @property {module:model/ProblemDetails}
+     */
+    ProblemDetails: ProblemDetails,
     /**
      * The FileSanitizationApi service constructor.
      * @property {module:api/FileSanitizationApi}
